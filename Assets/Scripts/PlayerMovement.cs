@@ -1,31 +1,42 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(PlayerAnimator))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private float _jumpPower;
+    [SerializeField] private float _jumpForce;
+    [SerializeField] private Transform _fulcrum;
+    [SerializeField] private LayerMask _ground;
 
-    private Rigidbody2D _rigidbody;
+    private PlayerAnimator _animation;
+    private Rigidbody2D _rigidbody;     
+    private float _groundCheckRadius = 0.1f;
     private bool _isFacingRight = true;
-    private bool _isGround = true;
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
+        _animation = GetComponent<PlayerAnimator>();
+        _rigidbody = GetComponent<Rigidbody2D>();       
     }
 
     private void Update()
+    {
+        Jump();
+    }
+
+    private void FixedUpdate()
     {
         Move();
     }
 
     private void Move()
     {
-        Vector2 direction;
-        var horizontalMove = Input.GetAxisRaw("Horizontal");
-        var isJump = Input.GetButtonDown("Jump");       
-        
+        float horizontalMove = Input.GetAxisRaw("Horizontal");
+        Vector2 direction = new Vector2(horizontalMove * _speed, _rigidbody.velocity.y);
+        bool isRunning = horizontalMove != 0;
+
+        _rigidbody.velocity = direction;
+
         if (horizontalMove < 0 && _isFacingRight == true)
         {
             Flip();
@@ -33,16 +44,22 @@ public class PlayerMovement : MonoBehaviour
         else if (horizontalMove > 0 && _isFacingRight == false)
         {
             Flip();
-        }
+        } 
 
-        direction = new Vector2(horizontalMove * _speed, _rigidbody.velocity.y);
-        _rigidbody.velocity = direction;
+        _animation.Run(isRunning);
+    }
 
-        if(isJump && _isGround)
+    private void Jump()
+    {
+        bool isJump = Input.GetButtonDown("Jump");
+        bool isGround = Physics2D.OverlapCircle(_fulcrum.position, _groundCheckRadius, _ground);
+
+        if (isJump && isGround)
         {
-            _isGround = false;
-            _rigidbody.AddForce(transform.up * _jumpPower, ForceMode2D.Impulse);
+            _rigidbody.velocity = transform.up * _jumpForce;
         }
+
+        _animation.Jump(!isGround);
     }
 
     private void Flip()
@@ -53,13 +70,5 @@ public class PlayerMovement : MonoBehaviour
         tempScale = transform.localScale;
         tempScale.x *= -1;
         transform.localScale = tempScale;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            _isGround = true;
-        }
     }
 }

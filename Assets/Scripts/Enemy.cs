@@ -2,16 +2,13 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private ParticleSystem _deathEffect;
-
-    private void Start()
-    {
-        _deathEffect = GetComponentInChildren<ParticleSystem>();
-    }
+    [SerializeField] private EnemyDeathEffect _deathEffect;
+    [SerializeField] private CoinSpawner _coinSpawner;
 
     public void Destroy()
-    {        
-        _deathEffect.Play();
-        Destroy(gameObject, 3f);
+    {
+        _deathEffect.InvokEffect(transform);
+        _coinSpawner.DropCoins(transform);
+        Destroy(gameObject);
     }
 }

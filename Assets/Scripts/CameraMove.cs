@@ -15,7 +15,7 @@ public class CameraMove : MonoBehaviour
     {
         if (_player != null)
         {            
-            var positionX = Mathf.Clamp(_player.transform.position.x, _offsetLeft, _offsetRight);
+            float positionX = Mathf.Clamp(_player.transform.position.x, _offsetLeft, _offsetRight);
 
             transform.position = new Vector3(positionX, 0, transform.position.z);
         }

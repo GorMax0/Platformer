@@ -19,7 +19,7 @@ public class ParallaxEffect : MonoBehaviour
 
     private void Update()
     {
-        var delta = _followingTarget.position - _targetPreviousPosition;
+        Vector3 delta = _followingTarget.position - _targetPreviousPosition;
 
         _targetPreviousPosition = _followingTarget.position;
         transform.position += delta * _parallaxStrength;

@@ -16,7 +16,12 @@ public class UIHealthBar : MonoBehaviour
 
     private void Start()
     {
-        _player.OnChangeHealth += CountHealth;
+        _player.HealthChange += CountHealth;
+    }
+
+    private void OnDestroy()
+    {
+        _player.HealthChange -= CountHealth;
     }
 
     private void CountHealth(int health)

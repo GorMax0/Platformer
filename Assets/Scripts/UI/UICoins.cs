@@ -14,12 +14,12 @@ public class UICoins : MonoBehaviour
 
     private void Start()
     {   
-        _player.OnPickupCoin += CountCoins;
+        _player.CoinPickup += CountCoins;
     }
 
     private void OnDestroy()
     {
-        _player.OnPickupCoin -= CountCoins;
+        _player.CoinPickup -= CountCoins;
     }
 
     private void CountCoins(int countCoin)

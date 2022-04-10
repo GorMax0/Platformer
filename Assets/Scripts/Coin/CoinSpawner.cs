@@ -4,11 +4,11 @@ public class CoinSpawner : MonoBehaviour
 {
     [SerializeField] private Coin _coin;
 
-    private SpawnPointCoin[] _spawnPoints;
+    private SpawnPoint[] _spawnPoints;
 
     private void Awake()
     {
-        _spawnPoints = GetComponentsInChildren<SpawnPointCoin>();
+        _spawnPoints = GetComponentsInChildren<SpawnPoint>();
         Spawn();
     }
 

@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private float _groundCheckRadius = 0.1f;
     private bool _isFacingRight = true;
+    private bool _canMove = true;
 
     private void Awake()
     {
@@ -23,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        _player.OnDead += Destroy;
+        _player.Death += DisallowMovement;
     }
 
     private void Update()
@@ -38,19 +39,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        float horizontalMove = Input.GetAxisRaw("Horizontal");
+        const string horizontal = "Horizontal";
+        float horizontalMove = Input.GetAxisRaw(horizontal);
         Vector2 direction = new Vector2(horizontalMove * _speed, _rigidbody.velocity.y);
         bool isRunning = horizontalMove != 0;
 
-        _rigidbody.velocity = direction;
+        if (_canMove)
+        {
+            _rigidbody.velocity = direction;
 
-        if (horizontalMove < 0 && _isFacingRight == true)
-        {
-            Flip();
-        }
-        else if (horizontalMove > 0 && _isFacingRight == false)
-        {
-            Flip();
+            if (horizontalMove < 0 && _isFacingRight == true)
+            {
+                Flip();
+            }
+            else if (horizontalMove > 0 && _isFacingRight == false)
+            {
+                Flip();
+            }
         }
 
         _animation.Run(isRunning);
@@ -58,10 +63,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        bool isJump = Input.GetButtonDown("Jump");
+        const string jump = "Jump";
+        bool isJump = Input.GetButtonDown(jump);
         bool isGround = Physics2D.OverlapCircle(_fulcrum.position, _groundCheckRadius, _ground);
 
-        if (isJump && isGround)
+        if (isJump && isGround && _canMove)
         {
             _rigidbody.velocity = transform.up * _jumpForce;
         }
@@ -78,9 +84,9 @@ public class PlayerMovement : MonoBehaviour
         _isFacingRight = !_isFacingRight;
     }
 
-    private void Destroy()
+    private void DisallowMovement()
     {
-        _player.OnDead -= Destroy;
-        Destroy(this, 0.1f);
+        _player.Death -= DisallowMovement;
+        _canMove = false;
     }
 }

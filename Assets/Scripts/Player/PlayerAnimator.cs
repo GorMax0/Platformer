@@ -17,12 +17,12 @@ public class PlayerAnimator : MonoBehaviour
     private void Start()
     {
         _player = GetComponent<Player>();
-        _player.OnDead += Die;
+        _player.Death += Die;
     }
 
     private void OnDestroy()
     {
-        _player.OnDead -= Die;
+        _player.Death -= Die;
     }
 
     public void Run(bool isRunning)

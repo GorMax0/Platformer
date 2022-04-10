@@ -6,9 +6,9 @@ public class Player : MonoBehaviour
     private int _health = 3;
     private int _amountCoins;
 
-    public UnityAction OnDead;
-    public UnityAction<int> OnChangeHealth;
-    public UnityAction<int> OnPickupCoin;
+    public UnityAction Death;
+    public UnityAction<int> HealthChange;
+    public UnityAction<int> CoinPickup;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -21,18 +21,18 @@ public class Player : MonoBehaviour
         {
             _amountCoins++;
             Destroy(coin.gameObject);
-            OnPickupCoin?.Invoke(_amountCoins);
+            CoinPickup?.Invoke(_amountCoins);
         }
     }
 
     public void TakeDamage(int damage)
     {
         _health -= damage;
-        OnChangeHealth?.Invoke(_health);
+        HealthChange?.Invoke(_health);
 
         if(_health <= 0)
         {
-            OnDead?.Invoke();
+            Death?.Invoke();
         }
     }
 }

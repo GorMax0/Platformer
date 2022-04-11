@@ -21,7 +21,7 @@ public class CoinSpawner : MonoBehaviour
         for (int i = 0; i < countCoin; i++)
         {
             Coin coin = Instantiate(_coin, enemy.transform.position, Quaternion.identity);
-            coin.Drop();
+            coin.Drop();            
         }
     }
 

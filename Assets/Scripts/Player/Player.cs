@@ -7,6 +7,9 @@ public class Player : MonoBehaviour
     private int _amountCoins;
     private bool _isTakeCoin;
 
+    public bool HasKey { get; private set; }
+
+    public event UnityAction KeyPurchased;
     public event UnityAction Death;
     public event UnityAction<int> HealthChange;
     public event UnityAction<int> CoinPickup;
@@ -23,7 +26,7 @@ public class Player : MonoBehaviour
             Destroy(coin.gameObject);
 
             if (_isTakeCoin == false)
-            {             
+            {
                 _isTakeCoin = true;
                 _amountCoins++;
                 CoinPickup?.Invoke(_amountCoins);
@@ -37,6 +40,19 @@ public class Player : MonoBehaviour
         {
             _isTakeCoin = false;
         }
+    }
+
+    public bool TryBuyKey(int cost)
+    {
+        if (_amountCoins >= cost)
+        {
+            _amountCoins -= cost;
+            HasKey = true;
+            KeyPurchased?.Invoke();
+            return true;
+        }
+
+        return false;
     }
 
     public void TakeDamage(int damage)

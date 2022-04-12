@@ -21,6 +21,7 @@ public class Door : MonoBehaviour
         {
             if (player.HasKey)
             {
+                player.UseKey();
                 _doorSprite.sprite = _doorOpen;
                 _collider.isTrigger = true;
             }

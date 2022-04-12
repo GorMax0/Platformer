@@ -5,6 +5,7 @@ public class UIKey : MonoBehaviour
 {
     [SerializeField] private Player _player;
     [SerializeField] private Sprite _keyAvailable;
+    [SerializeField] private Sprite _noKey;
 
     private Image _image;
 
@@ -15,16 +16,23 @@ public class UIKey : MonoBehaviour
 
     private void Start()
     {
-        _player.KeyPurchased += DisplayKey;
+        _player.KeyIsAvailable += DisplayKey;
     }
 
     private void OnDestroy()
     {
-        _player.KeyPurchased -= DisplayKey;
+        _player.KeyIsAvailable -= DisplayKey;
     }
 
-    private void DisplayKey()
+    private void DisplayKey(bool hasKey)
     {
-        _image.sprite = _keyAvailable;
+        if (hasKey)
+        {
+            _image.sprite = _keyAvailable;
+        }
+        else
+        {
+            _image.sprite = _noKey;
+        }
     }
 }

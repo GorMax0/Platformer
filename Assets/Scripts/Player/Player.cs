@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 
     public bool HasKey { get; private set; }
 
-    public event UnityAction KeyPurchased;
+    public event UnityAction<bool> KeyIsAvailable;
     public event UnityAction Death;
     public event UnityAction<int> HealthChange;
     public event UnityAction<int> CoinPickup;
@@ -48,11 +48,17 @@ public class Player : MonoBehaviour
         {
             _amountCoins -= cost;
             HasKey = true;
-            KeyPurchased?.Invoke();
+            KeyIsAvailable?.Invoke(HasKey);
             return true;
         }
 
         return false;
+    }
+
+    public void UseKey()
+    {
+        HasKey = false;
+        KeyIsAvailable?.Invoke(HasKey);
     }
 
     public void TakeDamage(int damage)

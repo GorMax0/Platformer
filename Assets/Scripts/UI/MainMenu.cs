@@ -15,7 +15,7 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         _buttons[0].onClick.AddListener(StartGame);
-        _buttons[1].onClick.AddListener(ExitGame);
+        _buttons[2].onClick.AddListener(ExitGame);
     }
 
     private void StartGame()

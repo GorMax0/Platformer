@@ -28,14 +28,14 @@ public class Door : MonoBehaviour
             else
             {
                 _message = "Нужен ключ, чтобы открыть дверь!";
-                _dialog.ShowDialog(true, _message);
+                _dialog.ShowDialog(_message);
             }
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        _dialog.ShowDialog(false);
+        _dialog.HideDialog();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -43,7 +43,7 @@ public class Door : MonoBehaviour
         if (collision.TryGetComponent(out Player player))
         {
             _message = "ПОЗДРАВЛЯЮ УРОВЕНЬ ПРОЙДЕН!";
-            _dialog.ShowDialog(true, _message);
+            _dialog.ShowDialog(_message);
         }
     }
 }

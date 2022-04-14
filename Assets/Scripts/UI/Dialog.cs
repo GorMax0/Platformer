@@ -1,22 +1,27 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(CanvasGroup))]
 public class Dialog : MonoBehaviour
 {
-    private Image _background;
+    private CanvasGroup _dialog;
     private Text _messege;
 
     private void Awake()
     {
-        _background = GetComponentInChildren<Image>();
+        _dialog = GetComponent<CanvasGroup>();
         _messege = GetComponentInChildren<Text>();
-        ShowDialog(false);
+        _dialog.alpha = 0f;
     }
 
-    public void ShowDialog(bool isEnable, string message = "")
+    public void ShowDialog(string message)
     {
-        _background.gameObject.SetActive(isEnable);
-        _messege.gameObject.SetActive(isEnable);
+        _dialog.alpha = 1f;
         _messege.text = message;
+    }
+
+    public void HideDialog()
+    {
+        _dialog.alpha = 0f;
     }
 }

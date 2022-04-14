@@ -11,16 +11,16 @@ public class PlayerAnimator : MonoBehaviour
 
     private void Awake()
     {
+        _player = GetComponent<Player>();
         _animator = GetComponent<Animator>();
     }
 
-    private void Start()
-    {
-        _player = GetComponent<Player>();
+    private void OnEnable()
+    {        
         _player.Death += Die;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         _player.Death -= Die;
     }

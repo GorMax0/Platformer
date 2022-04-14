@@ -14,12 +14,12 @@ public class UIKey : MonoBehaviour
         _image = GetComponent<Image>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         _player.KeyIsAvailable += DisplayKey;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         _player.KeyIsAvailable -= DisplayKey;
     }

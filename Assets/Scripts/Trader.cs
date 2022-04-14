@@ -27,7 +27,7 @@ public class Trader : MonoBehaviour
                 _message = "Я тебе уже продал ключ, чего тебе ещё нужно?!";
             }
 
-            _dialog.ShowDialog(true, _message);
+            _dialog.ShowDialog(_message);
         }
     }
 
@@ -35,7 +35,7 @@ public class Trader : MonoBehaviour
     {
         if (collision.TryGetComponent(out Player player))
         {
-            _dialog.ShowDialog(false);
+            _dialog.HideDialog();
         }
     }
 }

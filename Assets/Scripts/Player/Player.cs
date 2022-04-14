@@ -14,6 +14,11 @@ public class Player : MonoBehaviour
     public event UnityAction<int> HealthChange;
     public event UnityAction<int> CoinPickup;
 
+    private void Start()
+    {
+        HealthChange?.Invoke(_health);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out Enemy enemy))
@@ -31,6 +36,13 @@ public class Player : MonoBehaviour
                 _amountCoins++;
                 CoinPickup?.Invoke(_amountCoins);
             }
+        }
+
+        if (collision.TryGetComponent(out Heart heart))
+        {
+            Destroy(heart.gameObject);
+            _health += heart.Amount;
+            HealthChange?.Invoke(_health);
         }
     }
 

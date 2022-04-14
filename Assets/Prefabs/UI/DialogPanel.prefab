@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8354178287322029681}
   - component: {fileID: 8354178287322029680}
+  - component: {fileID: 1555905189102499722}
   m_Layer: 5
   m_Name: DialogPanel
   m_TagString: Untagged
@@ -50,6 +51,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06c09443beebeb1409f5125b48ff32b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &1555905189102499722
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8354178287322029682}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8354178287689740025
 GameObject:
   m_ObjectHideFlags: 0

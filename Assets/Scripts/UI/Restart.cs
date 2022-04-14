@@ -2,37 +2,40 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(CanvasGroup))]
 public class Restart : MonoBehaviour
 {
     [SerializeField] private Player _player;
 
+    private CanvasGroup _restartPanel;
     private Button _restartButton;
 
     private void Awake()
     {
+        _restartPanel = GetComponent<CanvasGroup>();
         _restartButton = GetComponentInChildren<Button>();
-        _restartButton.gameObject.SetActive(false);
+        _restartPanel.alpha = 0f;
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        _player.Death += EnableButton;
+        _player.Death += OnDeath;
+        _restartButton.onClick.AddListener(RestartLevel);
     }
 
     private void OnDisable()
     {
-        _player.Death -= EnableButton;
+        _player.Death -= OnDeath;
+        _restartButton.onClick.RemoveListener(RestartLevel);
     }
 
-    private void EnableButton()
+    private void OnDeath()
     {
-        _restartButton.onClick.AddListener(RestartLevel);
-        _restartButton.gameObject.SetActive(true);
+        _restartPanel.alpha = 1f;
     }
 
     private void RestartLevel()
-    {
-        _restartButton.onClick.RemoveListener(RestartLevel);
+    {        
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

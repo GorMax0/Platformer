@@ -43,7 +43,7 @@ public class EnemyDeathEffect : MonoBehaviour
     {
         foreach (var effect in _deathEffects)
         {
-            if (effect.gameObject.activeInHierarchy == false)
+            if (effect.gameObject.activeSelf == false)
             {
                 return effect;
             }

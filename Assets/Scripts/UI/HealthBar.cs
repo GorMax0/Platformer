@@ -2,22 +2,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIHealthBar : MonoBehaviour
+public class HealthBar : MonoBehaviour
 {
     [SerializeField] private Player _player;
-    [SerializeField] private UIHeart _heartTemplate;
+    [SerializeField] private HeartView _heartTemplate;
 
     private int _currentHealth;
-    private List<UIHeart> _healthPoints = new List<UIHeart>();
+    private List<HeartView> _healthPoints = new List<HeartView>();
 
     private void OnEnable()
     {
-        _player.HealthChange += OnHealthChange;
+        _player.HealthChanged += OnHealthChange;
     }
 
     private void OnDisable()
     {
-        _player.HealthChange -= OnHealthChange;
+        _player.HealthChanged -= OnHealthChange;
     }
 
     private void OnHealthChange(int health)
@@ -33,7 +33,7 @@ public class UIHealthBar : MonoBehaviour
         {
             for (int i = 0; i < health - _currentHealth; i++)
             {
-                if (TryFill(out UIHeart heart))
+                if (TryFill(out HeartView heart))
                 {
                     heart.ToFill();
                 }
@@ -47,7 +47,7 @@ public class UIHealthBar : MonoBehaviour
         {
             for (int i = 0; i < _currentHealth - health; i++)
             {
-                if (TryEmpty(out UIHeart heart))
+                if (TryEmpty(out HeartView heart))
                 {
                     heart.ToEmpty();
                 }
@@ -57,14 +57,14 @@ public class UIHealthBar : MonoBehaviour
         _currentHealth = health;
     }
 
-    private UIHeart CreateHeart()
+    private HeartView CreateHeart()
     {
-        UIHeart heart = Instantiate(_heartTemplate, transform);
+        HeartView heart = Instantiate(_heartTemplate, transform);
 
         return heart;
     }
 
-    private bool TryFill(out UIHeart heart)
+    private bool TryFill(out HeartView heart)
     {
         for (int i = 0; i < _healthPoints.Count; i++)
         {
@@ -79,7 +79,7 @@ public class UIHealthBar : MonoBehaviour
         return false;
     }
 
-    private bool TryEmpty(out UIHeart heart)
+    private bool TryEmpty(out HeartView heart)
     {
         for (int i = _healthPoints.Count - 1; i >= 0; i--)
         {

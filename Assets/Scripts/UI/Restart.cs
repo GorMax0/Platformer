@@ -19,13 +19,13 @@ public class Restart : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.Death += OnDeath;
+        _player.Died += OnDeath;
         _restartButton.onClick.AddListener(RestartLevel);
     }
 
     private void OnDisable()
     {
-        _player.Death -= OnDeath;
+        _player.Died -= OnDeath;
         _restartButton.onClick.RemoveListener(RestartLevel);
     }
 

@@ -1,29 +1,34 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyDeathEffect _deathEffect;
     [SerializeField] private CoinSpawner _coinSpawner;
+    [SerializeField] private int _damage = 1;
 
-    private bool _isPlayerCollision;
+    private Coroutine _causeDamage;
 
-    private int _damage = 1;
+    public event UnityAction CollisionToPlayerDetected
+        ;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.TryGetComponent(out Player player))
         {
-            _isPlayerCollision = true;
-            StartCoroutine(CauseDamage(player));
+            _causeDamage = StartCoroutine(CauseDamage(player));
         }
+
+        CollisionToPlayerDetected?.Invoke();
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.collider.TryGetComponent(out Player player))
         {
-            _isPlayerCollision = false;
+            StopCoroutine(_causeDamage);
+            _causeDamage = null;
         }
     }
 
@@ -35,10 +40,10 @@ public class Enemy : MonoBehaviour
     }
 
     private IEnumerator CauseDamage(Player player)
-    {
+    {        
         WaitForSeconds waitForSeconds = new WaitForSeconds(1f);
 
-        while (_isPlayerCollision)
+        while (true)
         {
             player.TakeDamage(_damage);
             yield return waitForSeconds;

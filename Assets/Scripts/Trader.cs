@@ -3,23 +3,24 @@ using UnityEngine;
 public class Trader : MonoBehaviour
 {
     [SerializeField] private Dialog _dialog;
+    [SerializeField] private Key _key;
 
-    private string _message;
-    private int _costKey = 50;
+    private string _message;    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out Player player))
         {
-            if (player.HasKey == false)
+            if (player.Key == null)
             {
-                if (player.TryBuyKey(_costKey))
+                if (_key.Cost <= player.Coins)
                 {
+                    player.BuyKey(_key);
                     _message = "Вижу ты принес мне монеты, держи ключ! Надеюсь он поможет открыть тебе дверь... Хе-хе-хе...";
                 }
                 else
                 {
-                    _message = "У меня есть то, что поможет открыть дверь, приниси мне 50 монет и я отдам тебе ключ!";
+                    _message = $"У меня есть то, что поможет открыть дверь, приниси мне {_key.Cost} монет и я отдам тебе {_key.Name}!";
                 }
             }
             else

@@ -20,7 +20,7 @@ public class CoinSpawner : MonoBehaviour
 
         for (int i = 0; i < countCoin; i++)
         {
-            Coin coin = Instantiate(_coin, enemy.transform.position, Quaternion.identity);
+            Coin coin = Instantiate(_coin, enemy.transform.position, Quaternion.identity, transform);
             coin.Drop();            
         }
     }
@@ -34,7 +34,7 @@ public class CoinSpawner : MonoBehaviour
             float spawnPositionX = spawnPoint.transform.position.x;
             float spawnPositionY = spawnPoint.transform.position.y;
 
-            coin = Instantiate(_coin, new Vector2(spawnPositionX, spawnPositionY), Quaternion.identity);
+            coin = Instantiate(_coin, new Vector2(spawnPositionX, spawnPositionY), Quaternion.identity, transform);
             coin.GetComponent<CircleCollider2D>().enabled = true;
         }
     }

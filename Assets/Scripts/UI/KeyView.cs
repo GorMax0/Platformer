@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIKey : MonoBehaviour
+public class KeyView : MonoBehaviour
 {
     [SerializeField] private Player _player;
-    [SerializeField] private Sprite _keyAvailable;
     [SerializeField] private Sprite _noKey;
 
     private Image _image;
@@ -16,19 +15,19 @@ public class UIKey : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.KeyIsAvailable += DisplayKey;
+        _player.KeyBuyed += DisplayKey;
     }
 
     private void OnDisable()
     {
-        _player.KeyIsAvailable -= DisplayKey;
+        _player.KeyBuyed -= DisplayKey;
     }
 
-    private void DisplayKey(bool hasKey)
+    private void DisplayKey(Key key)
     {
-        if (hasKey)
+        if (key != null)
         {
-            _image.sprite = _keyAvailable;
+            _image.sprite = key.Icon;
         }
         else
         {

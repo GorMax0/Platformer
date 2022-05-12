@@ -4,19 +4,19 @@ using UnityEngine.Events;
 public class Player : MonoBehaviour
 {
     private int _health = 3;
-    private int _amountCoins;
     private bool _isTakeCoin;
 
-    public bool HasKey { get; private set; }
+    public int Coins { get; private set; }
+    public Key Key { get; private set; }
 
-    public event UnityAction<bool> KeyIsAvailable;
-    public event UnityAction Death;
-    public event UnityAction<int> HealthChange;
-    public event UnityAction<int> CoinPickup;
+    public event UnityAction Died;
+    public event UnityAction<int> HealthChanged;
+    public event UnityAction<int> AmountCoinChanged;
+    public event UnityAction<Key> KeyBuyed;
 
     private void Start()
     {
-        HealthChange?.Invoke(_health);
+        HealthChanged?.Invoke(_health);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -33,8 +33,8 @@ public class Player : MonoBehaviour
             if (_isTakeCoin == false)
             {
                 _isTakeCoin = true;
-                _amountCoins++;
-                CoinPickup?.Invoke(_amountCoins);
+                Coins++;
+                AmountCoinChanged?.Invoke(Coins);
             }
         }
 
@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
         {
             Destroy(heart.gameObject);
             _health += heart.Amount;
-            HealthChange?.Invoke(_health);
+            HealthChanged?.Invoke(_health);
         }
     }
 
@@ -54,33 +54,28 @@ public class Player : MonoBehaviour
         }
     }
 
-    public bool TryBuyKey(int cost)
+    public void BuyKey(Key key)
     {
-        if (_amountCoins >= cost)
-        {
-            _amountCoins -= cost;
-            HasKey = true;
-            KeyIsAvailable?.Invoke(HasKey);
-            return true;
-        }
-
-        return false;
+        Coins -= key.Cost;
+        Key = key;
+        KeyBuyed?.Invoke(Key);
+        AmountCoinChanged?.Invoke(Coins);
     }
 
     public void UseKey()
     {
-        HasKey = false;
-        KeyIsAvailable?.Invoke(HasKey);
+        Key = null;
+        KeyBuyed?.Invoke(Key);
     }
 
     public void TakeDamage(int damage)
     {
         _health -= damage;
-        HealthChange?.Invoke(_health);
+        HealthChanged?.Invoke(_health);
 
         if (_health <= 0)
         {
-            Death?.Invoke();
+            Died?.Invoke();
         }
     }
 }

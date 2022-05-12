@@ -134,6 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _deathEffect: {fileID: 0}
   _coinSpawner: {fileID: 0}
+  _damage: 1
 --- !u!114 &9015828997407847233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,10 +199,11 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0.21069765, y: 0.33774614}
-      - {x: 0.1777687, y: 0.4162476}
-      - {x: 0.07326746, y: 0.49971604}
-      - {x: -0.064945936, y: 0.5000479}
-      - {x: -0.15462637, y: 0.4577794}
+      - {x: 0.19402981, y: 0.36746335}
+      - {x: 0.16541576, y: 0.41298866}
+      - {x: 0.08826685, y: 0.43172193}
+      - {x: -0.062235594, y: 0.43500233}
+      - {x: -0.17630816, y: 0.38460302}
       - {x: -0.20953155, y: 0.35630882}
       - {x: -0.22501588, y: 0.2509086}
       - {x: -0.2074871, y: 0.075359106}
@@ -230,8 +232,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.47}
-  m_Size: {x: 0.31000003, y: 0.075}
+  m_Offset: {x: -0.002943216, y: 0.2692868}
+  m_Size: {x: 0.47308123, y: 0.4493264}
   m_Direction: 1
 --- !u!95 &720481526561216108
 Animator:

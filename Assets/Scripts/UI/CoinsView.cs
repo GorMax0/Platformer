@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UICoins : MonoBehaviour
+public class CoinsView : MonoBehaviour
 {
    [SerializeField] private Player _player;
 
@@ -14,12 +14,12 @@ public class UICoins : MonoBehaviour
 
     private void Start()
     {   
-        _player.CoinPickup += CountCoins;
+        _player.AmountCoinChanged += CountCoins;
     }
 
     private void OnDestroy()
     {
-        _player.CoinPickup -= CountCoins;
+        _player.AmountCoinChanged -= CountCoins;
     }
 
     private void CountCoins(int countCoin)

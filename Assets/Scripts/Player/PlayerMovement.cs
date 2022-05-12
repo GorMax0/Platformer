@@ -9,8 +9,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask _ground;
 
     private Player _player;
+    private InputSystem _input;
     private PlayerAnimator _animation;
     private Rigidbody2D _rigidbody;
+    private Vector2 _direction;
     private float _groundCheckRadius = 0.1f;
     private bool _isFacingRight = true;
     private bool _canMove = true;
@@ -18,18 +20,37 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _player = GetComponent<Player>();
+        _input = new InputSystem();
         _animation = GetComponent<PlayerAnimator>();
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
+    private void OnEnable()
+    {
+        _input.Player.Jump.performed += context => Jump();
+        _input.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _input.Disable();
+    }
+
     private void Start()
     {
-        _player.Death += DisallowMovement;
+        _player.Died += DisallowMovement;
     }
 
     private void Update()
     {
-        Jump();
+        if (_direction.y != 0)
+        {
+            _animation.Jump(true);
+        }
+        else
+        {
+            _animation.Jump(false);
+        }
     }
 
     private void FixedUpdate()
@@ -39,40 +60,35 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        const string horizontal = "Horizontal";
-        float horizontalMove = Input.GetAxisRaw(horizontal);
-        Vector2 direction = new Vector2(horizontalMove * _speed, _rigidbody.velocity.y);
-        bool isRunning = horizontalMove != 0;
+        _direction = new Vector2(_input.Player.Move.ReadValue<float>() * _speed, _rigidbody.velocity.y);
+
+        bool isRunning = _direction.x != 0;
 
         if (_canMove)
         {
-            _rigidbody.velocity = direction;
+            _rigidbody.velocity = _direction;
 
-            if (horizontalMove < 0 && _isFacingRight == true)
+            if (_direction.x < 0 && _isFacingRight == true)
             {
                 Flip();
             }
-            else if (horizontalMove > 0 && _isFacingRight == false)
+            else if (_direction.x > 0 && _isFacingRight == false)
             {
                 Flip();
             }
+
+            _animation.Run(isRunning);
         }
-
-        _animation.Run(isRunning);
     }
 
     private void Jump()
     {
-        const string jump = "Jump";
-        bool isJump = Input.GetButtonDown(jump);
         bool isGround = Physics2D.OverlapCircle(_fulcrum.position, _groundCheckRadius, _ground);
 
-        if (isJump && isGround && _canMove)
+        if (isGround && _canMove)
         {
             _rigidbody.velocity = transform.up * _jumpForce;
         }
-
-        _animation.Jump(!isGround);
     }
 
     private void Flip()
@@ -86,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void DisallowMovement()
     {
-        _player.Death -= DisallowMovement;
+        _player.Died -= DisallowMovement;
         _canMove = false;
     }
 }

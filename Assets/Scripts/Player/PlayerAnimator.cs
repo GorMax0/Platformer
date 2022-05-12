@@ -17,12 +17,12 @@ public class PlayerAnimator : MonoBehaviour
 
     private void OnEnable()
     {        
-        _player.Death += Die;
+        _player.Died += Die;
     }
 
     private void OnDisable()
     {
-        _player.Death -= Die;
+        _player.Died -= Die;
     }
 
     public void Run(bool isRunning)

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer), typeof(BoxCollider2D))]
 public class Door : MonoBehaviour
 {
     [SerializeField] private Dialog _dialog;
@@ -19,11 +20,9 @@ public class Door : MonoBehaviour
     {
         if (collision.collider.TryGetComponent(out Player player))
         {
-            if (player.HasKey)
+            if (player.Key != null)
             {
-                player.UseKey();
-                _doorSprite.sprite = _doorOpen;
-                _collider.isTrigger = true;
+                Open(player);
             }
             else
             {
@@ -45,5 +44,12 @@ public class Door : MonoBehaviour
             _message = "онгдпюбкъч спнбемэ опнидем!";
             _dialog.ShowDialog(_message);
         }
+    }
+
+    private void Open(Player player)
+    {
+        player.UseKey();
+        _doorSprite.sprite = _doorOpen;
+        _collider.isTrigger = true;
     }
 }

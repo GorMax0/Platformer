@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class UIHeart : MonoBehaviour
+public class HeartView : MonoBehaviour
 {
     [SerializeField] private Sprite _fullHeart;
     [SerializeField] private Sprite _emptyHeart;
